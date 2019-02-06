@@ -1,0 +1,8 @@
+.modal {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+}
+
+.modal-dialog {
+    width: 500px;
+}
