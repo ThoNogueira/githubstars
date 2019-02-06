@@ -68,7 +68,7 @@ def load_all_repositories(gitLogin):
 
         headers = {
             # Autorização gerada no github. Para o deploy deve idealmente ser registrada no SO.
-            'Authorization': 'bearer ed0f088dc9880b20ed1bf44afc08dac50e3610ee'
+            'Authorization': 'bearer  8b67d06eb1e74a55ba8887cd388618bbb060461a'
         }
         url = 'https://api.github.com/graphql'
         transport = RequestsHTTPTransport(url, headers=headers, use_json=True)
@@ -172,6 +172,9 @@ def get_repositories():
     
     # Resgata a lista com o nome das tags que o usuário deseja utilizar para filtrar a lista de repositórios
     recived_tags = request.args.get('tags')
+
+    # print(request.query_string)
+    print(recived_tags)
 
     recived_tags_names = None
     if recived_tags:
