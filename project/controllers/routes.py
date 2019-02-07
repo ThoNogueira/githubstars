@@ -99,18 +99,18 @@ def load_all_repositories(gitLogin):
                 # Determina a inclusão do repositorio
                 db.session.add(repository)
 
-                # Seleciona a tag cujo nome seja o nome do usuario que favoritou o repositorio. Essa será sempre a primeira tag sugerida.
-                tag_login = sqlalchemy.Tag.query.filter_by(name=gitLogin).first()
+                # Seleciona a tag cujo nome seja o nome do reositorio. Essa será sempre a primeira tag sugerida.
+                tag_repositoryName = sqlalchemy.Tag.query.filter_by(name=repositoryName).first()
 
                 # Se a tag não existir
-                if not tag_login:
+                if not tag_repositoryName:
                     # Instancia a tag
-                    tag_login = sqlalchemy.Tag(gitLogin)
+                    tag_repositoryName = sqlalchemy.Tag(repositoryName)
                     # Determian a inclusão da tag
-                    db.session.add(tag_login)
+                    db.session.add(tag_repositoryName)
 
-                # Define a primeira tag do repositorio como sendo o login do usuario que favoritou o repositório
-                repository.tags.append(tag_login)
+                # Define a primeira tag do repositorio como sendo o nome do repositório
+                repository.tags.append(tag_repositoryName)
 
                 # Seleciona as lista de linguagens que o repositório possui
                 languages = node.get('languages')

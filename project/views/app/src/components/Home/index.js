@@ -1,5 +1,5 @@
 import React from "react";
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 
 import Header from "../Header";
 
@@ -40,7 +40,7 @@ class Home extends React.Component {
                 onClick={this.onSubmit.bind(this)}
                 className="btn btn-primary mb-5 d-flex justify-content-center align-content-between"
               >
-                get repositories <PlayArrowIcon/>
+                get repositories <PlayArrowIcon />
               </button>
             </div>
           </form>
