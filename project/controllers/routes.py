@@ -2,7 +2,6 @@ import os
 
 from flask import Blueprint, request, jsonify
 
-# TODO: Tho: Verificar se é possível substituir por flask_sqlalchemy
 from sqlalchemy import func, text, or_, any_
 
 from gql import gql, Client

@@ -1,6 +1,6 @@
 from flask import Blueprint
 from project import db, ma
-# TODO: Tho: Verificar se é possível substituir por ma
+
 import marshmallow as marsh
 
 bp = Blueprint('sqlalchemy', __name__)
@@ -21,7 +21,7 @@ class Repository(db.Model):
     __tablename__ = "repositories"
 
     id = db.Column(db.Integer, primary_key=True)
-    # TODO: Tho: Resgata ID do repositório
+    
     git_login = db.Column(db.String)
     name = db.Column(db.String(100), unique=True)
     url = db.Column(db.String(2000), unique=True)
@@ -94,7 +94,6 @@ class RepositorySchema(ma.ModelSchema):
         languages = Repository.query.get(repo_id).languages
         return languages
 
-    # TODO: Tho: Verificar se da pra substituir 'marsh' por 'ma'.
     @marsh.post_dump(pass_many=True)
     def post_dump(self, data, many):
         if many:
