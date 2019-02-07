@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Search from '@material-ui/icons/Search';
+import Search from "@material-ui/icons/Search";
 
 import APIClient from "../../apiClient";
 import Modal from "../Modal";
@@ -15,12 +15,12 @@ class List extends Component {
     this.state = {
       showModal: false,
       repositories: null,
-      repo: null,
+      repository: null,
       tags: [],
       searchTags: [],
       error: null
     };
-    
+
     this.handleShow = this.handleShow.bind(this);
     this.handleHide = this.handleHide.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -28,15 +28,15 @@ class List extends Component {
     this.apiClient = new APIClient();
   }
 
-  handleShow(repo) {
+  handleShow(repository) {
     this.apiClient
-      .getRepositoryTags(repo.id)
+      .getRepositoryTags(repository.id)
       .then(data =>
         this.setState({
           ...this.state,
           showModal: true,
           tags: data.map(tag => tag.name),
-          repo: repo
+          repository: repository
         })
       )
       .catch(error => {
@@ -109,7 +109,7 @@ class List extends Component {
   onSubmit = e => {
     e.preventDefault();
     this.apiClient
-      .updateRepositoryTags(this.state.repo.id, this.state.tags)
+      .updateRepositoryTags(this.state.repository.id, this.state.tags)
       .then(() => {
         this.handleHide();
         this.getRepositories();
@@ -136,7 +136,7 @@ class List extends Component {
   };
 
   render() {
-    const { tags, repo, showModal } = this.state;
+    const { tags, repository, showModal } = this.state;
 
     const modal = showModal ? (
       <Modal>
@@ -147,7 +147,7 @@ class List extends Component {
                 <div className="modal-body">
                   <div className="form-group">
                     <label htmlFor="tags" className="col-form-label">
-                      Edit tags for {repo.Repository}
+                      Edit tags for {repository.Repository}
                     </label>
                     <input
                       type="text"
@@ -198,7 +198,7 @@ class List extends Component {
                 <div className="input-group-prepend">
                   <span className="input-group-text">
                     {" "}
-                    <Search/>
+                    <Search />
                   </span>
                 </div>
                 <input
