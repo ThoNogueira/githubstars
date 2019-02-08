@@ -2,7 +2,6 @@ import os
 
 from flask import Blueprint, request, jsonify
 
-# TODO: Tho: Verificar se é possível substituir por flask_sqlalchemy
 from sqlalchemy import func, text, or_, any_
 
 from gql import gql, Client
@@ -172,9 +171,6 @@ def get_repositories():
     
     # Resgata a lista com o nome das tags que o usuário deseja utilizar para filtrar a lista de repositórios
     recived_tags = request.args.get('tags')
-
-    # print(request.query_string)
-    print(recived_tags)
 
     recived_tags_names = None
     if recived_tags:

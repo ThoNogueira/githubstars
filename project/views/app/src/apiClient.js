@@ -14,8 +14,6 @@ class APIClient {
   }
 
   getRepositories(gitLogin, tags) {
-    console.log("TESTE:")
-    console.log(encodeURIComponent(tags))
     return this.perform(
       "get", `/api/v1/repositories?git_login=${gitLogin}&tags=${encodeURIComponent(tags)}`
     );
