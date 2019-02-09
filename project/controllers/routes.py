@@ -1,4 +1,5 @@
 import os
+import json
 
 from flask import Blueprint, request, jsonify
 
@@ -14,11 +15,14 @@ from project.models import sqlalchemy
 bp = Blueprint('routes', __name__)
 
 # Insere no banco todos os repositorios favoritados no git hub cujo user corresponde ao login recebido
-@bp.route("/api/v1/repositories/<string:gitLogin>", methods=['POST'])
-def load_all_repositories(gitLogin):
+@bp.route("/api/v1/repositories", methods=['POST'])
+def load_all_repositories():
+
+    git_login = json.loads(request.data)['gitLogin']
 
     # Função recursiva para navegar entre na paginação do graphQL
     def insert_all_stars_repositories(endCursor=''):
+
         # Define a query que será executada na API V4 (graphQL) do github
         query = ''
         if endCursor == '':
@@ -28,7 +32,7 @@ def load_all_repositories(gitLogin):
                             id
                             name
                             starredRepositories(first: 100) {
-                ''' % gitLogin
+                ''' % git_login
         else:
             query = '''
                     query starredRepositories($endCursor: String = "%s"){
@@ -36,7 +40,7 @@ def load_all_repositories(gitLogin):
                             id
                             name
                             starredRepositories(first: 100, after: $endCursor) {
-                ''' % (endCursor, gitLogin)
+                ''' % (endCursor, git_login)
 
         query += '''
                     totalCount
@@ -94,7 +98,7 @@ def load_all_repositories(gitLogin):
             # Se o repositorio não existir
             if not repository:
                 # Instancia um novo repositorio com as informações selecionadas
-                repository = sqlalchemy.Repository(gitLogin, repositoryName, node.get('url'), node.get('description'))
+                repository = sqlalchemy.Repository(git_login, repositoryName, node.get('url'), node.get('description'))
                 # Determina a inclusão do repositorio
                 db.session.add(repository)
 
@@ -159,7 +163,7 @@ def load_all_repositories(gitLogin):
     insert_all_stars_repositories()
 
     # Retorna o login recebido por parâmetro
-    return jsonify({'result': gitLogin})
+    return jsonify({'result': git_login})
 
 
 # Seleciona os repositórios
@@ -167,7 +171,7 @@ def load_all_repositories(gitLogin):
 def get_repositories():
 
     # Resgata o login do git recebido no request
-    recived_git_login = request.args.get('git_login')
+    git_login = request.args.get('git_login')
     
     # Resgata a lista com o nome das tags que o usuário deseja utilizar para filtrar a lista de repositórios
     recived_tags = request.args.get('tags')
@@ -188,12 +192,12 @@ def get_repositories():
         repositories = sqlalchemy.Repository.query \
             .join(sqlalchemy.repositories_tags_association) \
             .join(sqlalchemy.Tag) \
-            .filter(func.lower(sqlalchemy.Repository.git_login) == func.lower(recived_git_login)) \
+            .filter(func.lower(sqlalchemy.Repository.git_login) == func.lower(git_login)) \
             .filter(or_(*[func.lower(sqlalchemy.Tag.name).like(name) for name in recived_tags_names])).all()
     # Se não recebeu a tag
     else:
         # Seleciona todos os repositórios cujo git_login seja igual ao recebido
-        repositories = sqlalchemy.Repository.query.filter(func.lower(sqlalchemy.Repository.git_login) == func.lower(recived_git_login)).all()
+        repositories = sqlalchemy.Repository.query.filter(func.lower(sqlalchemy.Repository.git_login) == func.lower(git_login)).all()
     
     # Resgata o esquema dos repositório
     repository_schema = sqlalchemy.RepositorySchema(many=True)

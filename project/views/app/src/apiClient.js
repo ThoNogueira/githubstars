@@ -6,7 +6,8 @@ const client = axios.create({
 
 class APIClient {
   loadAllRepositories(gitLogin) {
-    return this.perform("post", `/api/v1/repositories/${gitLogin}`);
+    console.log(gitLogin)
+    return this.perform("post", '/api/v1/repositories', {gitLogin: gitLogin});
   }
 
   updateRepositoryTags(repoID, tags) {
