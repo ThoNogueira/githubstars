@@ -5,17 +5,84 @@ HOST: http://127.0.0.1:5000/api/v1
 
 Esta é a API do projeto GitHub Stars. Projeto desenvolvido com o objetivo de aplicar para uma vaga na brainn.co.
 
-# Group Repositori
+# Group Repositórios
 
-## Carregar repositórios [POST]
+## Repositórios [/repositories]
 
-+ Request Caregar repositórios favoritos do login gitp
+### Carregar repositórios [POST]
+Resgata os repositórios favoritos de um usuário Git Hub e insere na dase de dados.
 
-    + Headers
-
-            Accept: application/json
-            Content-Type: application/json
-    + Attributes (Message)
++ Request (application/json)    
+    + Attributes (object)
+        + gitLogin: "thonogueira" (string, required) - Login do usuário Git Hub para o qual deseja resgatar os repositórios favoritos.
 
 + Response 201 (application/json)
-    + Attributes (Created)
+    + Attributes (object)
+        + gitLogin: "thonogueira" (string) - Login do usuário Git Hub para o qual os repositórios favoritos foram resgatados e inseridos na base de dados.
+
+## Repositório [repositories/${repository_id}]
+Inclui, altera e exclui as tags de um repositório. 
+
+### Alterar tags de repositorio [PATCH]
+
++ Parameters
+    + repository_id: 1 (number) - ID do repositório.
+
++ Response 200 (application/json)
+    + Attributes (object)
+        + repository_id: 1 (number) - ID do repositório que teve suas tags alteradas.
+
+## Informações de Repositórios [/repositories{?git_login, tags}]
+Resgata da base de dados os repositórios favoritos de um determinado usuário restingindo a seleção por tags.
+
++ Parameters
+    + git_login: 'thonogueira' (string, required) - Login do usuário Git Hub para o qual deseja resgatar os repositórios favoritos.
+    + tags: 'C#, CSS, HTML' (string) - Lista de tags separadas por vírgula.
+
+### Resgatar repositorios [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+        [
+            {
+                Repository: "gql",
+                Description: "A GraphQL client in Python",
+                Languages: "Python, Shell",
+                Tags: "thonogueira, Python, Shel",
+                id: 1
+            },
+            {
+                Repository: "challenge-development",
+                Description: "A cool development challenge for our awesome future team",
+                Tags: "thonogueira",
+                id: 2
+            }
+        ]
+
+## Tags [repositories/${repository_id}/tags}]
+
++ Parameters
+    + repository_id: 1 (number) - ID do repositório.
+
+### Resgatar tags do repositório [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+        [
+            {
+                id: 1,
+                name: "C#"
+            },
+            {
+                id: 2,
+                name: "CSS"
+            },
+            {
+                id: 3,
+                name: "HTML"
+            }
+        ]

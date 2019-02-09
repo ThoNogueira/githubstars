@@ -10,8 +10,8 @@ class APIClient {
     return this.perform("post", '/api/v1/repositories', {gitLogin: gitLogin});
   }
 
-  updateRepositoryTags(repoID, tags) {
-    return this.perform("patch", `/api/v1/repositories/${repoID}`, { tags: tags });
+  updateRepositoryTags(repositoryID, tags) {
+    return this.perform("patch", `/api/v1/repositories/${repositoryID}`, { tags: tags });
   }
 
   getRepositories(gitLogin, tags) {
@@ -20,8 +20,8 @@ class APIClient {
     );
   }
 
-  getRepositoryTags(repoID) {
-    return this.perform("get", `/api/v1/repositories/${repoID}/tags`);
+  getRepositoryTags(repositoryID) {
+    return this.perform("get", `/api/v1/repositories/${repositoryID}/tags`);
   }
 
   perform(method, resource, data) {
@@ -30,8 +30,9 @@ class APIClient {
         url: resource,
         data
       })
-      .then(resp => {
-        return resp.data ? resp.data : [];
+      .then(response => {
+        console.log(response.data)
+        return response.data ? response.data : [];
       });
   }
 }

@@ -163,7 +163,7 @@ def load_all_repositories():
     insert_all_stars_repositories()
 
     # Retorna o login recebido por parâmetro
-    return jsonify({'result': git_login})
+    return jsonify({'result': git_login}), 201
 
 
 # Seleciona os repositórios
@@ -270,7 +270,7 @@ def update_repository(id):
 
     db.session.commit()
 
-    return jsonify({'result': id})
+    return jsonify({'repository_id': id})
 
 
 # Controla as exceções
